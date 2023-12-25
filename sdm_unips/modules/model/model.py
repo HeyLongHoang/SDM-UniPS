@@ -90,7 +90,7 @@ class ScaleInvariantSpatialLightImageEncoder(nn.Module): # image feature encoder
         K = mosaic_scale * mosaic_scale
 
         """ (1a) resizing x to (Hc, Wc)"""
-        x_resized = F.interpolate(x, size= (canonical_resolution, canonical_resolution), mode='bilinear', align_corners=True)
+        x_resized = F.interpolate(x, size= canonical_resolution.item(), mode='bilinear', align_corners=True) # CHANGE
 
         """ (1b) decomposing x into K x K of (Hc, Wc) non-overlapped blocks (stride)"""           
         x_grid = divide_tensor_spatial(x, block_size=canonical_resolution, method='tile_stride') # (B, K, C, canonical_resolution, canonical_resolution)
@@ -233,7 +233,7 @@ class Net(nn.Module):
         img = I.permute(0, 4, 1, 2, 3).to(self.device)
         mask = M 
          
-        decoder_imgsize = (decoder_resolution, decoder_resolution)
+        decoder_imgsize = (decoder_resolution.item(), decoder_resolution.item()) # CHANGE
         img = img.reshape(-1, img.shape[2], img.shape[3], img.shape[4])
         img = img[img_index==1, :, :, :]
         I_dec = F.interpolate(img, size=decoder_imgsize, mode='bilinear', align_corners=False)  

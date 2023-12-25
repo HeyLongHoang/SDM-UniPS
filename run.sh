@@ -1,0 +1,1 @@
+python sdm_unips/main.py --session_name SESSON_1 --test_dir data/w_mask --checkpoint checkpoint --scalable
